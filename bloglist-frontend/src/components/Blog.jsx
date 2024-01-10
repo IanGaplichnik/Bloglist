@@ -1,11 +1,10 @@
-import axios from 'axios'
 import PropTypes from 'prop-types'
-import { useState } from 'react'
-import blogService, { deleteFromServer } from '../services/blogs'
+import { deleteFromServer } from '../services/blogs'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Link } from 'react-router-dom'
 
-const Blog = ({ blog, likeClickHandler, username }) => {
-  const [infoVisible, setInfoVisible] = useState(false)
+const Blog = ({ blog }) => {
+  // const [infoVisible, setInfoVisible] = useState(false)
   const queryClient = useQueryClient()
   const deleteBlogMutation = useMutation({
     mutationFn: deleteFromServer,
@@ -20,9 +19,9 @@ const Blog = ({ blog, likeClickHandler, username }) => {
     marginBottom: 5,
   }
 
-  const switchVisible = () => {
-    setInfoVisible(!infoVisible)
-  }
+  // const switchVisible = () => {
+  //   setInfoVisible(!infoVisible)
+  // }
 
   const handleDelete = () => {
     if (
@@ -33,38 +32,47 @@ const Blog = ({ blog, likeClickHandler, username }) => {
       deleteBlogMutation.mutate(blog.id)
   }
 
-  const showWhenVisible = { display: infoVisible ? '' : 'none' }
-
   return (
     <div style={blogStyle} className='Blog' id='blog'>
       <p>
-        {blog.title} {blog.author}
+        <Link to={`/blogs/${blog.id}`}>
+          {blog.title} {blog.author}
+        </Link>
       </p>
-      <button onClick={switchVisible} id='toggleVisibility'>
-        {infoVisible ? 'hide' : 'show'}
-      </button>
-      <div style={showWhenVisible}>
-        <p>{blog.url}</p>
-        <p>
-          likes {blog.likes}{' '}
-          <button onClick={likeClickHandler} id='like'>
-            like
-          </button>
-        </p>
-        <p>{blog.user.username}</p>
-        {blog.user.username === username && (
-          <button onClick={handleDelete} id='delete'>
-            delete
-          </button>
-        )}
-      </div>
     </div>
   )
+
+  // const showWhenVisible = { display: infoVisible ? '' : 'none' }
+
+  // return (
+  //   <div style={blogStyle} className='Blog' id='blog'>
+  //     <p>
+  //       {blog.title} {blog.author}
+  //     </p>
+  //     <button onClick={switchVisible} id='toggleVisibility'>
+  //       {infoVisible ? 'hide' : 'show'}
+  //     </button>
+  //     <div style={showWhenVisible}>
+  //       <p>{blog.url}</p>
+  //       <p>
+  //         likes {blog.likes}{' '}
+  //         <button onClick={likeClickHandler} id='like'>
+  //           like
+  //         </button>
+  //       </p>
+  //       <p>{blog.user.username}</p>
+  //       {blog.user.username === username && (
+  //         <button onClick={handleDelete} id='delete'>
+  //           delete
+  //         </button>
+  //       )}
+  //     </div>
+  //   </div>
+  // )
 }
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  likeClickHandler: PropTypes.func.isRequired,
 }
 
 export default Blog

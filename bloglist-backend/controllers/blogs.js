@@ -101,4 +101,20 @@ blogsRouter.put(
   }
 )
 
+blogsRouter.post('/:id/comments', async (request, response, next) => {
+  const id = request.params.id
+  console.log('id = ', id)
+  const updateBlog = request.body
+  try {
+    const blogToGetComment = await Blog.findByIdAndUpdate(id, updateBlog, {
+      new: true,
+      runValidators: true,
+      context: 'query',
+    })
+    return response.json(blogToGetComment)
+  } catch (err) {
+    next(err)
+  }
+})
+
 module.exports = blogsRouter

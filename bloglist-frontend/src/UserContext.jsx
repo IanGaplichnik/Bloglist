@@ -13,7 +13,6 @@ const userReducer = (state, action) => {
       return user
     }
     case 'RESET_USER': {
-      console.log('here')
       window.localStorage.removeItem(loggedBlogappUserKey)
       blogService.setToken(null)
       return null

@@ -1,11 +1,9 @@
 import { useEffect, useContext } from 'react'
-import blogService from './services/blogs'
-import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import MainPage from './components/MainPage'
-import { useQuery } from '@tanstack/react-query'
-import { getBlogs } from './services/blogs'
 import { UserContext } from './UserContext'
+import blogService from './services/blogs'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 const App = () => {
   const { user, dispatchUser } = useContext(UserContext)
@@ -19,21 +17,13 @@ const App = () => {
     }
   }, [])
 
-  const result = useQuery({
-    queryKey: ['blogs'],
-    queryFn: getBlogs,
-    retry: 1,
-  })
-
-  if (result.isLoading) return <div>Loading</div>
-  if (result.isError) return <div>Server problem</div>
-  const blogs = result.data
-
   return (
-    <div>
-      {!user && <LoginForm />}
-      {user && <MainPage blogs={blogs} />}
-    </div>
+    <Router>
+      <div>
+        {!user && <LoginForm />}
+        {user && <MainPage />}
+      </div>
+    </Router>
   )
 }
 

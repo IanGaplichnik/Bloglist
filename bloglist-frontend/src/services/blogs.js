@@ -28,6 +28,11 @@ export const getBlogs = async () => {
   return response.data
 }
 
+export const getUsers = async () => {
+  const response = await axios.get('http://localhost:3003/api/users')
+  return response.data
+}
+
 export const deleteFromServer = async (objectIdToDelete) => {
   const config = {
     headers: { Authorization: token },
@@ -35,5 +40,8 @@ export const deleteFromServer = async (objectIdToDelete) => {
   const response = await axios.delete(`${baseUrl}/${objectIdToDelete}`, config)
   return response.data
 }
+
+export const addComment = async (blogWithComment) =>
+  await axios.post(`${baseUrl}/${blogWithComment.id}/comments`, blogWithComment)
 
 export default { setToken }
